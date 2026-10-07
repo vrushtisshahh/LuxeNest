@@ -607,7 +607,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
                     const response =
                         await fetch(
-                            "http://localhost:5000/api/enquiries",
+                            "https://luxenest-40px.onrender.com/api/enquiries",
                             {
                                 method: "POST",
 
