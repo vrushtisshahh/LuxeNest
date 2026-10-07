@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>LuxeNest Admin</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 40px;
+            background: #f5f2ed;
+            color: #222;
+        }
+
+        h1 {
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #777;
+            margin-bottom: 30px;
+        }
+
+        #enquiries {
+            display: grid;
+            gap: 20px;
+        }
+
+        .enquiry-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .enquiry-card h3 {
+            margin-top: 0;
+        }
+
+        .enquiry-card p {
+            margin: 8px 0;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            background: #eee;
+            font-size: 13px;
+        }
+
+        .loading {
+            color: #777;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>LuxeNest Admin</h1>
+
+    <p class="subtitle">
+        Customer Enquiries
+    </p>
+
+    <div id="enquiries">
+        <p class="loading">
+            Loading enquiries...
+        </p>
+    </div>
+
+    <script>
+        const enquiriesContainer = document.getElementById("enquiries");
+
+        fetch("http://localhost:5000/api/enquiries")
+            .then(response => response.json())
+            .then(data => {
+
+                enquiriesContainer.innerHTML = "";
+
+                data.forEach(enquiry => {
+
+                    const card = document.createElement("div");
+
+                    card.className = "enquiry-card";
+
+                    card.innerHTML = `
+                        <h3>${enquiry.name}</h3>
+
+                        <p><strong>Email:</strong> ${enquiry.email}</p>
+
+                        <p><strong>Phone:</strong> ${enquiry.phone || "Not provided"}</p>
+
+                        <p><strong>Project:</strong> ${enquiry.project}</p>
+
+                        <p><strong>Message:</strong> ${enquiry.message}</p>
+
+                        <span class="status">
+                            ${enquiry.status}
+                        </span>
+                    `;
+
+                    enquiriesContainer.appendChild(card);
+                });
+            })
+            .catch(error => {
+                enquiriesContainer.innerHTML =
+                    "<p>Unable to load enquiries.</p>";
+
+                console.log("Error:", error);
+            });
+    </script>
+
+</body>
+</html>
